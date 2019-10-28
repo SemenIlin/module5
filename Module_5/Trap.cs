@@ -1,5 +1,4 @@
-﻿
-namespace Module_5
+﻿namespace Module_5
 {
     class Trap : ITrap
     {
@@ -17,44 +16,20 @@ namespace Module_5
             _isActiveTrap = isActiveTrap;
         }
 
-        public void SetDamage(int hitPoint)
-        {
-            _damage = hitPoint;        
-        }
+        public void SetDamage(int hitPoint) => _damage = hitPoint;  
+                
+        public int GetDamage() => _damage;       
 
-        public int GetDamage()
-        {
-            return _damage;            
-        }
+        public void SetPositionX(int x) => _x = x;
+ 
+        public int GetPositionX() => _x;       
 
-        public void SetPositionX(int x)
-        {
-            _x = x;        
-        }
+        public void SetPositionY(int y) => _y = y;
 
-        public int GetPositionX()
-        {
-            return _x;        
-        }
+        public int GetPositionY() => _y;
 
-        public void SetPositionY(int y)
-        {
-            _y = y;
-        }
+        public void SetIsActiveTrap(bool active) => _isActiveTrap = active;      
 
-        public int GetPositionY()
-        {
-            return _y;        
-        }
-
-        public void SetIsActiveTrap(bool active)
-        {
-            _isActiveTrap = active;
-        }
-
-        public bool GetIsActiveTrap()
-        {
-            return _isActiveTrap;        
-        }
+        public bool GetIsActiveTrap() => _isActiveTrap;
     }
 }

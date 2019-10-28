@@ -1,5 +1,4 @@
-﻿
-namespace Module_5
+﻿namespace Module_5
 {
     class Player :  IPlayer
     {
@@ -16,39 +15,18 @@ namespace Module_5
             _view = view;
         }
         
-        public void SetHitPoint(int hitPoint)
-        {
-            _hitPoint = hitPoint;        
-        }
+        public void SetHitPoint(int hitPoint) => _hitPoint = hitPoint;  
+       
+        public int GetHitPoint() => _hitPoint;      
 
-        public int GetHitPoint()
-        {
-            return _hitPoint;
-        }
+        public void SetPositionX(int x) => _x = x;       
 
-        public void SetPositionX(int x)
-        {
-            _x = x;        
-        }
+        public int GetPositionX() => _x;
 
-        public int GetPositionX()
-        {
-            return _x;
-        }
+        public void SetPositionY(int y) => _y = y;
 
-        public void SetPositionY(int y)
-        {
-            _y = y;        
-        }
+        public int GetPositionY() => _y;
 
-        public int GetPositionY() 
-        {
-            return _y;        
-        }
-
-        public char GetView()
-        {
-            return _view;        
-        }
+        public char GetView() => _view;        
     }
 }

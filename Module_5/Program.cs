@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace Module_5
 {
@@ -9,35 +8,37 @@ namespace Module_5
         {
             Player player = new Player(10,1,1);
             Map map = new Map(player);
-            map.AddTrapOnMap();
+            Logic logic = new Logic(player, map.Traps);
+            
+            map.AddTrapOnMap(); 
 
             while (true)
             {
                 map.DrawMap();
-                if (Console.ReadKey().Key == ConsoleKey.Escape)
+                logic.LogicGame();
+               
+                if (!logic.Status)
                 {
-                    break;                
-                }
-                if (!LogicUser.Status)
-                {
-                    Console.WriteLine($"{LogicUser.Message}\n"+
-                                       "Do you want play again?\n"+
-                                       "If yes, press any key. "+
+                    Console.WriteLine($"{logic.Message}\n" +
+                                       "Do you want play again?\n" +
+                                       "If yes, press any key. " +
                                        "Else press Esc.");
                     if (Console.ReadKey().Key != ConsoleKey.Escape)
                     {
-                        player = new Player(10, 1, 1);
+                        player.SetPositionX(1);
+                        player.SetPositionY(1);
+                        player.SetHitPoint(10);
                         map = new Map(player);
                         map.AddTrapOnMap();
-                        LogicUser.Status = true;
+                        logic.Status = true;
                     }
-                    else 
+                    else
                     {
-                        break;                    
+                        break;
                     }
-                    
                 }
-                
+
+                Console.Clear();
             }
         }
     }
