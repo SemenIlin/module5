@@ -1,102 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Module_5
 {
     class Logic
-    {        
-        enum Direction
-        {
-            Left,
-            Right,
-            Up,
-            Down
-        }
+    {    
+        private readonly IPlayer player;
+        private readonly IPlayer quin;
+        private readonly IMap map;
+        private readonly List<ITrap> trap;
+        private readonly CommandByUser commandByUser;
 
-        Direction direction;
-
-        readonly Player player;
-        readonly List<ITrap> trap;
-
-        public Logic(Player player, List<ITrap> trap)
+        public Logic(IPlayer player, IPlayer quin, IMap map, CommandByUser commandByUser, List<ITrap> trap)
         {
             this.player = player;
+            this.quin = quin;
+            this.map = map;
+            this.commandByUser = commandByUser;
             this.trap = trap;
         }
 
         public bool Status { get; set; } = true;
-        public string Message { get; set; }
+        public string Message { get; private set; }
 
         public void LogicGame()
         {
-            Move();
+            Move(commandByUser.DirectionPlayer);
             OutOfBounds();
             ContactWithTrap();
             StatusGame();
-            TextMessage();
+            ShowMessageAfterGameOver();
         }
 
-        private void Move()
-        {
-            InputData();
-
+        private void Move(CommandByUser.Direction direction)
+        {  
             switch (direction)
             {
-                case Direction.Left:
-                    player.SetPositionX(player.GetPositionX() - 1);
+                case CommandByUser.Direction.Left:
+                    player.PlayerPositionX -= 1;
                     break;
-                case Direction.Right:
-                    player.SetPositionX(player.GetPositionX() + 1);
+                case CommandByUser.Direction.Right:
+                    player.PlayerPositionX += 1;
                     break;
-                case Direction.Up:
-                    player.SetPositionY(player.GetPositionY() - 1);
+                case CommandByUser.Direction.Up:
+                    player.PlayerPositionY -= 1;
                     break;
-                case Direction.Down:
-                    player.SetPositionY(player.GetPositionY() + 1);
-                    break;
-            }
-        }
-
-        private void InputData()
-        {
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.A:
-                case ConsoleKey.LeftArrow:
-                    direction = Direction.Left;
-                    break;
-                case ConsoleKey.D:
-                case ConsoleKey.RightArrow:
-                    direction = Direction.Right;
-                    break;
-                case ConsoleKey.W:
-                case ConsoleKey.UpArrow:
-                    direction = Direction.Up;
-                    break;
-                case ConsoleKey.S:
-                case ConsoleKey.DownArrow:
-                    direction = Direction.Down;
+                case CommandByUser.Direction.Down:
+                    player.PlayerPositionY += 1;
                     break;
             }
-        }
+        }       
 
         private void OutOfBounds() 
         {
-            if (player.GetPositionX() >= Map.GetWidth())
+            if (player.PlayerPositionX >= map.Width)
             {
-                player.SetPositionX(Map.GetWidth() - 1);
+                player.PlayerPositionX = map.Width - 1;
             }
-            else if (player.GetPositionX() <= 0)
+            else if (player.PlayerPositionX <= 0)
             {
-                player.SetPositionX(1);
+                player.PlayerPositionX = 1;
             }
-            else if (player.GetPositionY() >= Map.GetHeight())
+            else if (player.PlayerPositionY >= map.Height)
             {
-                player.SetPositionY(player.GetPositionY() - 1);
+                player.PlayerPositionY -=1;
             }
-            else if (player.GetPositionY() <= 0)
+            else if (player.PlayerPositionY <= 0)
             {
-                player.SetPositionY(1);
+                player.PlayerPositionY = 1;
             }
         }
 
@@ -104,10 +74,11 @@ namespace Module_5
         {
             foreach (var item in trap)
             {
-                if ((player.GetPositionX() == item.GetPositionX()) && (player.GetPositionY() == item.GetPositionY()) && (item.GetIsActiveTrap()))
+                if ((player.PlayerPositionX == item.TrapPositionX) && (player.PlayerPositionY == item.TrapPositionY) && (item.TrapIsActive))
                 {
-                    player.SetHitPoint(player.GetHitPoint() - item.GetDamage());
-                    item.SetIsActiveTrap(false);
+                    player.PlayerHitPoints -=  item.TrapDamage;
+                    item.TrapIsActive = false;
+                    item.TrapIsVisible = true;
                     break;
                 }
             }
@@ -115,23 +86,23 @@ namespace Module_5
         
         private void StatusGame()
         {
-            if (player.GetHitPoint() <= 0)
+            if (player.PlayerHitPoints <= 0)
             {
                 Status = false;
             }
-            if (player.GetPositionX() == 10 && player.GetPositionY() == 10)
+            if ((player.PlayerPositionX == quin.PlayerPositionX) && (player.PlayerPositionY == quin.PlayerPositionY))
             {
                 Status = false;
             }
         }
 
-        private void TextMessage() 
+        private void ShowMessageAfterGameOver() 
         {
-            if (player.GetHitPoint() <= 0)
+            if (player.PlayerHitPoints <= 0)
             {
                 Message = "Game over. You lose.";
             }
-            if (player.GetPositionX() == 10 && player.GetPositionY() == 10)
+            if ((player.PlayerPositionX == quin.PlayerPositionX) && (player.PlayerPositionY == quin.PlayerPositionY))
             {
                 Message = "Game over. You win.";
             }

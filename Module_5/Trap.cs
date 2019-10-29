@@ -2,34 +2,23 @@
 {
     class Trap : ITrap
     {
-        private int _damage;
-        private int _x;
-        private int _y;
-        private bool _isActiveTrap;
-        
-
-        public Trap(int damage, int x, int y, bool isActiveTrap = true)
+        public Trap(int damage, int x, int y, bool isActiveTrap = true, bool isVisibleTrap = false)
         {
-            _damage = damage;
-            _x = x;
-            _y = y;
-            _isActiveTrap = isActiveTrap;
+            TrapDamage = damage;
+            TrapPositionX = x;
+            TrapPositionY = y;
+            TrapIsActive = isActiveTrap;
+            TrapIsVisible = isVisibleTrap;
         }
 
-        public void SetDamage(int hitPoint) => _damage = hitPoint;  
-                
-        public int GetDamage() => _damage;       
+        public int TrapDamage { get; set; }
 
-        public void SetPositionX(int x) => _x = x;
- 
-        public int GetPositionX() => _x;       
+        public int TrapPositionX { get; set; }
 
-        public void SetPositionY(int y) => _y = y;
+        public int TrapPositionY { get; set; }
 
-        public int GetPositionY() => _y;
+        public bool TrapIsActive { get; set; }
 
-        public void SetIsActiveTrap(bool active) => _isActiveTrap = active;      
-
-        public bool GetIsActiveTrap() => _isActiveTrap;
+        public bool TrapIsVisible { get; set; }
     }
 }
