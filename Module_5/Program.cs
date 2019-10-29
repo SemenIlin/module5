@@ -7,7 +7,7 @@ namespace Module_5
         static void Main()
         {
             Player player = new Player(10, 1, 1);
-            Player quin = new Player(10, 10, 10);
+            Player quin = new Player(10, 10, 10, '$');
             MapFirstLevel mapFirstLevel = new MapFirstLevel(player,quin);
 
             Map map = new Map();
@@ -23,13 +23,12 @@ namespace Module_5
                 try
                 {
                     commandByUser.InputData();
+                    logic.LogicGame();
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception.Message);                
+                    Console.WriteLine(exception.Message);
                 }
-
-                logic.LogicGame();               
                 if (!logic.Status)
                 {
                     Console.WriteLine($"{logic.Message}\n" +

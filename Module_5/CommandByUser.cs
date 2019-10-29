@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Module_5
 {
@@ -16,7 +14,7 @@ namespace Module_5
 
         public Direction DirectionPlayer { get; set; }
 
-        public Direction InputData()
+        public void InputData()
         {
             switch (Console.ReadKey().Key)
             {
@@ -39,8 +37,6 @@ namespace Module_5
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            return DirectionPlayer;
         }
     }
 }
