@@ -1,7 +1,7 @@
 ﻿
 namespace Module_5
 {
-    interface ITrap
+    public interface ITrap
     {
         int TrapDamage { get; set; }
 

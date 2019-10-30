@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Module_5
 {
-    class MapFirstLevel : IMap
+    public class MapFirstLevel : IMap
     {
         readonly Random random = new Random();
 
@@ -78,16 +78,19 @@ namespace Module_5
             {
                 for (int index1 = 0; index1 <= WIDTH; index1++)
                 {
-                    if ((index == 0) || (index == HEIGHT) || (index1 == 0) || (index1 == WIDTH))
+                    if ((index == 0) || (index == HEIGHT) ||
+                        (index1 == 0) || (index1 == WIDTH))
                     {
                         isEmptyCellsOfMap[index, index1] = false;
                         map[index, index1] = '#';
                     }
-                    else if ((index == player.PlayerPositionY) && (index1 == player.PlayerPositionX))
+                    else if ((index == player.PlayerPositionY) && 
+                        (index1 == player.PlayerPositionX))
                     {
                         isEmptyCellsOfMap[index, index1] = false;
                     }
-                    else if ((index == quin.PlayerPositionY) && (index1 == quin.PlayerPositionX))
+                    else if ((index == quin.PlayerPositionY) && 
+                        (index1 == quin.PlayerPositionX))
                     {
                         isEmptyCellsOfMap[index, index1] = false;
                     }
@@ -112,16 +115,19 @@ namespace Module_5
             {
                 for (int index1 = 0; index1 <= WIDTH; index1++)
                 {
-                    if ((index == player.PlayerPositionY) && (index1 == player.PlayerPositionX))
+                    if ((index == player.PlayerPositionY) && 
+                        (index1 == player.PlayerPositionX))
                     {
                         map[index, index1] = player.PlayerView;
                     }
-                    else if ((index == quin.PlayerPositionY) && (index1 == quin.PlayerPositionX))
+                    else if ((index == quin.PlayerPositionY) &&
+                        (index1 == quin.PlayerPositionX))
                     {
                         map[index, index1] = quin.PlayerView;
                     }
 
-                    if ((index != prevPositionY) && (index1 != prevPositionX))
+                    if ((index != prevPositionY) && 
+                        (index1 != prevPositionX))
                     {
                         map[prevPositionY, prevPositionX] = ' ';
                     }
@@ -144,9 +150,9 @@ namespace Module_5
             }
         }
 
-        public int Width { get;  } = WIDTH;
+        public int Width { get; } = WIDTH;
 
-        public int Height { get;  } = HEIGHT;       
+        public int Height { get; } = HEIGHT;       
     }
 }
 

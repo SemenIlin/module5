@@ -1,7 +1,7 @@
 ﻿
 namespace Module_5
 {
-    interface IPlayer
+    public interface IPlayer
     {
         int PlayerHitPoints { get; set; }
 

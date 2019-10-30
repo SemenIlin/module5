@@ -2,7 +2,7 @@
 
 namespace Module_5
 {
-    interface IMap
+    public interface IMap
     {
         List<ITrap> Traps { get;  }
 

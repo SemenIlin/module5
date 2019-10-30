@@ -1,6 +1,6 @@
 ﻿namespace Module_5
 {
-    class Trap : ITrap
+    public class Trap : ITrap
     {
         public Trap(int damage, int x, int y, bool isActiveTrap = true, bool isVisibleTrap = false)
         {

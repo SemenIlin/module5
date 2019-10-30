@@ -2,43 +2,56 @@
 
 namespace Module_5
 {
-    class Program
+    public class Program
     {
         static void Main()
         {
-            Player player = new Player(10, 1, 1);
-            Player quin = new Player(10, 10, 10, '$');
+            var program = new Program();
+            var player = new Player(10, 1, 1);
+            var quin = new Player(10, 10, 10, '$');
             
-            MapFirstLevel mapFirstLevel = new MapFirstLevel(player,quin);
-            Map map = new Map();
+            var mapFirstLevel = new MapFirstLevel(player,quin);
+            var logicFirstLevel = new LogicFirstLevel(player, quin, mapFirstLevel);
 
-            CommandByUser commandByUser = new CommandByUser();
-            LogicFirstLevel logicFirstLevel = new LogicFirstLevel(player, quin, mapFirstLevel, commandByUser);
-            Logic logic = new Logic();
+            mapFirstLevel.CreateMap();
+            mapFirstLevel.AddTrapOnMap();
 
-            map.CreateMap(mapFirstLevel);
-            map.AddTrapOnMap(mapFirstLevel);
-
-            while (true)
+            while (logicFirstLevel.Status)
             {
-                map.RenderMap(mapFirstLevel);
+                mapFirstLevel.RenderMap();
                 try
                 {
-                    commandByUser.InputData();
-                    logic.LogicMoveGame(logicFirstLevel);
+                    logicFirstLevel.LogicGameInteractionWithOjects(program.InputData());
                 }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                 }
 
-                logic.LogicUpdateLevelGame(logicFirstLevel);
-                if (Console.ReadKey().Key == ConsoleKey.Escape)
-                {
-                    break;
-                }
+                logicFirstLevel.LogicQuitOrUpdateLevelGame();
 
                 Console.Clear();
+            }
+        }
+
+        public Direction InputData()
+        {
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
+                    return Direction.Left;
+                case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
+                    return Direction.Right;                    
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                    return Direction.Up;
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                    return Direction.Down;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Module_5
 {
-    class Player :  IPlayer
+    public class Player :  IPlayer
     {
         public Player(int hitPoint = 10, int x = 1, int y = 1, char view ='@')
         {

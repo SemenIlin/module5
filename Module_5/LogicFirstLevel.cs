@@ -1,56 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Module_5
 {
-    class LogicFirstLevel : ILogicGame
+    public class LogicFirstLevel : ILogicGame
     {    
         private readonly IPlayer player;
         private readonly IPlayer quin;
         private readonly IMap map;
         private readonly List<ITrap> trap;
-        private readonly CommandByUser commandByUser;
 
-        public LogicFirstLevel(IPlayer player, IPlayer quin, IMap map, CommandByUser commandByUser)
+        public LogicFirstLevel(IPlayer player, IPlayer quin, IMap map)
         {
             this.player = player;
             this.quin = quin;
             this.map = map;
-            this.commandByUser = commandByUser;
             trap = map.Traps;
         }
 
         public bool Status { get; set; } = true;
         public string Message { get; set; }
 
-        public void LogicGame()
+        public void LogicGameInteractionWithOjects(Direction direction)
         {
-            Move(commandByUser.DirectionPlayer);
-            OutOfBounds();
+            Move(direction);
+            VerifyOutOfBounds();
             ContactWithTrap();
             StatusGame();
             ShowMessageAfterGameOver();
         }
 
-        private void Move(CommandByUser.Direction direction)
+        private void Move(Direction direction)
         {  
             switch (direction)
             {
-                case CommandByUser.Direction.Left:
+                case Direction.Left:
                     player.PlayerPositionX -= 1;
                     break;
-                case CommandByUser.Direction.Right:
+                case Direction.Right:
                     player.PlayerPositionX += 1;
                     break;
-                case CommandByUser.Direction.Up:
+                case Direction.Up:
                     player.PlayerPositionY -= 1;
                     break;
-                case CommandByUser.Direction.Down:
+                case Direction.Down:
                     player.PlayerPositionY += 1;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }       
 
-        private void OutOfBounds() 
+        private void VerifyOutOfBounds() 
         {
             if (player.PlayerPositionX >= map.Width)
             {
@@ -74,7 +75,9 @@ namespace Module_5
         {
             foreach (var item in trap)
             {
-                if ((player.PlayerPositionX == item.TrapPositionX) && (player.PlayerPositionY == item.TrapPositionY) && (item.TrapIsActive))
+                if ((player.PlayerPositionX == item.TrapPositionX) && 
+                    (player.PlayerPositionY == item.TrapPositionY) &&
+                    (item.TrapIsActive))
                 {
                     player.PlayerHitPoints -=  item.TrapDamage;
                     item.TrapIsActive = false;
@@ -90,7 +93,8 @@ namespace Module_5
             {
                 Status = false;
             }
-            if ((player.PlayerPositionX == quin.PlayerPositionX) && (player.PlayerPositionY == quin.PlayerPositionY))
+            if ((player.PlayerPositionX == quin.PlayerPositionX) && 
+                (player.PlayerPositionY == quin.PlayerPositionY))
             {
                 Status = false;
             }
@@ -102,9 +106,25 @@ namespace Module_5
             {
                 Message = "Game over. You lose.";
             }
-            if ((player.PlayerPositionX == quin.PlayerPositionX) && (player.PlayerPositionY == quin.PlayerPositionY))
+            if ((player.PlayerPositionX == quin.PlayerPositionX) &&
+                (player.PlayerPositionY == quin.PlayerPositionY))
             {
                 Message = "Game over. You win.";
+            }
+        }
+
+        public void LogicQuitOrUpdateLevelGame()
+        {
+            if (!Status)
+            {
+                Console.WriteLine($"{Message}\n" +
+                                   "Do you want play again?\n" +
+                                   "If yes, press any key. " +
+                                   "Else press Esc.");
+                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                {
+                    UpdateLevel();
+                }
             }
         }
 

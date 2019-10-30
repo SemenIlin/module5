@@ -1,12 +1,12 @@
 ﻿namespace Module_5
 {
-    interface ILogicGame
+    public interface ILogicGame
     {
         bool Status { get; set; }
 
         string Message { get; set; }
 
-        void LogicGame();
+        void LogicGameInteractionWithOjects(Direction direction);
 
         void UpdateLevel();
     }
