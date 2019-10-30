@@ -8,11 +8,13 @@ namespace Module_5
         {
             Player player = new Player(10, 1, 1);
             Player quin = new Player(10, 10, 10, '$');
+            
             MapFirstLevel mapFirstLevel = new MapFirstLevel(player,quin);
-
             Map map = new Map();
+
             CommandByUser commandByUser = new CommandByUser();
-            Logic logic = new Logic(player, quin, mapFirstLevel, commandByUser, mapFirstLevel.Traps);
+            LogicFirstLevel logicFirstLevel = new LogicFirstLevel(player, quin, mapFirstLevel, commandByUser);
+            Logic logic = new Logic();
 
             map.CreateMap(mapFirstLevel);
             map.AddTrapOnMap(mapFirstLevel);
@@ -23,31 +25,17 @@ namespace Module_5
                 try
                 {
                     commandByUser.InputData();
-                    logic.LogicGame();
+                    logic.LogicMoveGame(logicFirstLevel);
                 }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                 }
-                if (!logic.Status)
+
+                logic.LogicUpdateLevelGame(logicFirstLevel);
+                if (Console.ReadKey().Key == ConsoleKey.Escape)
                 {
-                    Console.WriteLine($"{logic.Message}\n" +
-                                       "Do you want play again?\n" +
-                                       "If yes, press any key. " +
-                                       "Else press Esc.");
-                    if (Console.ReadKey().Key != ConsoleKey.Escape)
-                    {
-                        player.PlayerPositionX = 1;
-                        player.PlayerPositionY = 1;
-                        player.PlayerHitPoints = 10;
-                        map.CreateMap(mapFirstLevel);
-                        map.UpadateTrapOnMap(mapFirstLevel);
-                        logic.Status = true;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
 
                 Console.Clear();

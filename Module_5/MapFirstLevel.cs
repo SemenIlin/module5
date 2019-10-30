@@ -29,7 +29,7 @@ namespace Module_5
             this.quin = quin;
         }
 
-        public List<ITrap> Traps { get; private set; } = new List<ITrap>();
+        public List<ITrap> Traps { get;  } = new List<ITrap>();
 
         public void AddTrapOnMap()
         {
