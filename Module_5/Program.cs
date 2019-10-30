@@ -36,7 +36,8 @@ namespace Module_5
 
         public Direction InputData()
         {
-            switch (Console.ReadKey().Key)
+            var key = Console.ReadKey().Key;
+            switch(key)
             {
                 case ConsoleKey.A:
                 case ConsoleKey.LeftArrow:
@@ -51,7 +52,7 @@ namespace Module_5
                 case ConsoleKey.DownArrow:
                     return Direction.Down;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(Direction), $"Unknown direction: {key}");
             }
         }
     }

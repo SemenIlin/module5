@@ -47,7 +47,7 @@ namespace Module_5
                     player.PlayerPositionY += 1;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(direction), $"Unknown direction: {direction}");
             }
         }       
 
