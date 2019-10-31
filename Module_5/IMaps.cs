@@ -7,15 +7,14 @@ namespace Module_5
         List<ITrap> Traps { get;  }
 
         void CreateMap();
-
         void UpadateTrapOnMap();
-
-        void AddTrapOnMap();        
-
+        void AddTrapOnMap(); 
         void RenderMap();
+
+        IPlayer Player { get; }
+        IPlayer Quin { get; }
         
         int Width { get;  }
-
         int Height { get;  }
     }
 }

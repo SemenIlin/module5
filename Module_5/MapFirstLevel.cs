@@ -19,14 +19,49 @@ namespace Module_5
         readonly char[,] map = new char[WIDTH + 1, HEIGHT + 1];
         readonly bool[,] isEmptyCellsOfMap = new bool[WIDTH + 1, HEIGHT + 1];
 
-        private readonly IPlayer player;
-        private readonly IPlayer quin;
+        public IPlayer Player { get; }
+        public IPlayer Quin { get; }
         private Trap trap;
 
         public MapFirstLevel(IPlayer player,IPlayer quin)
         {
-            this.player = player;
-            this.quin = quin;
+            Player = VerifyPositionPlayer(player);
+            Quin = VerifyPositionQuin(quin);
+        }
+
+        private IPlayer VerifyPositionPlayer(IPlayer player)
+        {
+            if (!IsValidRangeOfObjectLocation(player))
+            {
+                player.PlayerPositionX = 1;
+                player.PlayerPositionY = 1;
+            }
+
+            return player;
+        }
+
+        private IPlayer VerifyPositionQuin(IPlayer quin)
+        {
+            if (!IsValidRangeOfObjectLocation(quin))
+            {
+                quin.PlayerPositionX = 10;
+                quin.PlayerPositionY = 10;
+            }
+
+            return quin;
+        }
+
+        private bool IsValidRangeOfObjectLocation(IPlayer gameObject)
+        {
+            if ((gameObject.PlayerPositionX >= WIDTH) || (gameObject.PlayerPositionX <= 0) ||
+                (gameObject.PlayerPositionY >= HEIGHT) || (gameObject.PlayerPositionY <= 0))
+            {
+                return false;
+            }
+            else 
+            {
+                return true;            
+            }
         }
 
         public List<ITrap> Traps { get;  } = new List<ITrap>();
@@ -84,13 +119,13 @@ namespace Module_5
                         isEmptyCellsOfMap[index, index1] = false;
                         map[index, index1] = '#';
                     }
-                    else if ((index == player.PlayerPositionY) && 
-                        (index1 == player.PlayerPositionX))
+                    else if ((index == Player.PlayerPositionY) && 
+                        (index1 == Player.PlayerPositionX))
                     {
                         isEmptyCellsOfMap[index, index1] = false;
                     }
-                    else if ((index == quin.PlayerPositionY) && 
-                        (index1 == quin.PlayerPositionX))
+                    else if ((index == Quin.PlayerPositionY) && 
+                        (index1 == Quin.PlayerPositionX))
                     {
                         isEmptyCellsOfMap[index, index1] = false;
                     }
@@ -105,25 +140,25 @@ namespace Module_5
 
         public void RenderMap()
         {
-            prevPositionX = player.PlayerPositionX;
-            prevPositionY = player.PlayerPositionY;
+            prevPositionX = Player.PlayerPositionX;
+            prevPositionY = Player.PlayerPositionY;
             DrawTrap();
 
-            Console.WriteLine($"\nHit points {player.PlayerHitPoints}.");
+            Console.WriteLine($"\nHit points {Player.PlayerHitPoints}.");
 
             for (int index = 0; index <= HEIGHT; index++)
             {
                 for (int index1 = 0; index1 <= WIDTH; index1++)
                 {
-                    if ((index == player.PlayerPositionY) && 
-                        (index1 == player.PlayerPositionX))
+                    if ((index == Player.PlayerPositionY) && 
+                        (index1 == Player.PlayerPositionX))
                     {
-                        map[index, index1] = player.PlayerView;
+                        map[index, index1] = Player.PlayerView;
                     }
-                    else if ((index == quin.PlayerPositionY) &&
-                        (index1 == quin.PlayerPositionX))
+                    else if ((index == Quin.PlayerPositionY) &&
+                        (index1 == Quin.PlayerPositionX))
                     {
-                        map[index, index1] = quin.PlayerView;
+                        map[index, index1] = Quin.PlayerView;
                     }
 
                     if ((index != prevPositionY) && 

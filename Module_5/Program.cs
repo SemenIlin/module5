@@ -10,8 +10,8 @@ namespace Module_5
             var player = new Player(10, 1, 1);
             var quin = new Player(10, 10, 10, '$');
             
-            var mapFirstLevel = new MapFirstLevel(player,quin);
-            var logicFirstLevel = new LogicFirstLevel(player, quin, mapFirstLevel);
+            var mapFirstLevel = new MapFirstLevel(player, quin);
+            var logicFirstLevel = new LogicFirstLevel(mapFirstLevel);
 
             mapFirstLevel.CreateMap();
             mapFirstLevel.AddTrapOnMap();

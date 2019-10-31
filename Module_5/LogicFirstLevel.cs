@@ -10,10 +10,10 @@ namespace Module_5
         private readonly IMap map;
         private readonly List<ITrap> trap;
 
-        public LogicFirstLevel(IPlayer player, IPlayer quin, IMap map)
+        public LogicFirstLevel(IMap map)
         {
-            this.player = player;
-            this.quin = quin;
+            player = map.Player;
+            quin = map.Quin;
             this.map = map;
             trap = map.Traps;
         }
