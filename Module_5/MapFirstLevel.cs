@@ -16,8 +16,8 @@ namespace Module_5
         private int trapPositionY;
         private int damage;
 
-        readonly char[,] map = new char[WIDTH + 1, HEIGHT + 1];
-        readonly bool[,] isEmptyCellsOfMap = new bool[WIDTH + 1, HEIGHT + 1];
+        private readonly char[,] map = new char[WIDTH + 1, HEIGHT + 1];
+        private readonly bool[,] isEmptyCellsOfMap = new bool[WIDTH + 1, HEIGHT + 1];
 
         public IPlayer Player { get; }
         public IPlayer Quin { get; }
@@ -25,36 +25,25 @@ namespace Module_5
 
         public MapFirstLevel(IPlayer player,IPlayer quin)
         {
-            Player = VerifyPositionPlayer(player);
-            Quin = VerifyPositionQuin(quin);
+            Player = VerifyPositionGamePerson(player, 1, 1);
+            Quin = VerifyPositionGamePerson(quin, 10, 10);
         }
 
-        private IPlayer VerifyPositionPlayer(IPlayer player)
+        private IPlayer VerifyPositionGamePerson(IPlayer person, int positionX, int positionY)
         {
-            if (!IsValidRangeOfObjectLocation(player))
+            if (!IsValidRangeOfObjectLocation(person))
             {
-                player.PlayerPositionX = 1;
-                player.PlayerPositionY = 1;
+                person.PlayerPositionX = positionX;
+                person.PlayerPositionY = positionY;
             }
 
-            return player;
+            return person;
         }
 
-        private IPlayer VerifyPositionQuin(IPlayer quin)
+        private bool IsValidRangeOfObjectLocation(IPlayer person)
         {
-            if (!IsValidRangeOfObjectLocation(quin))
-            {
-                quin.PlayerPositionX = 10;
-                quin.PlayerPositionY = 10;
-            }
-
-            return quin;
-        }
-
-        private bool IsValidRangeOfObjectLocation(IPlayer gameObject)
-        {
-            if ((gameObject.PlayerPositionX >= WIDTH) || (gameObject.PlayerPositionX <= 0) ||
-                (gameObject.PlayerPositionY >= HEIGHT) || (gameObject.PlayerPositionY <= 0))
+            if ((person.PlayerPositionX >= WIDTH) || (person.PlayerPositionX <= 0) ||
+                (person.PlayerPositionY >= HEIGHT) || (person.PlayerPositionY <= 0))
             {
                 return false;
             }
@@ -161,7 +150,7 @@ namespace Module_5
                         map[index, index1] = Quin.PlayerView;
                     }
 
-                    if ((index != prevPositionY) && 
+                    if ((index != prevPositionY) &&
                         (index1 != prevPositionX))
                     {
                         map[prevPositionY, prevPositionX] = ' ';
