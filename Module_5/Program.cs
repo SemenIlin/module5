@@ -6,12 +6,11 @@ namespace Module_5
     {
         static void Main()
         {
-            var program = new Program();
-            var player = new Player(10, 1, 1);
-            var quin = new Player(10, 10, 10, '$');
+            var player = new Player(10, -11, 1);
+            var quin = new Player(10, 10, 100, '$');
             
             var mapFirstLevel = new MapFirstLevel(player, quin);
-            var logicFirstLevel = new LogicFirstLevel(mapFirstLevel);
+            var logicFirstLevel = new LogicFirstLevel(mapFirstLevel, player, quin);
 
             mapFirstLevel.CreateMap();
             mapFirstLevel.AddTrapOnMap();
@@ -21,7 +20,7 @@ namespace Module_5
                 mapFirstLevel.RenderMap();
                 try
                 {
-                    logicFirstLevel.LogicGameInteractionWithOjects(program.InputData());
+                    logicFirstLevel.LogicGameInteractionWithOjects(InputData());
                 }
                 catch (Exception exception)
                 {
@@ -34,10 +33,9 @@ namespace Module_5
             }
         }
 
-        public Direction InputData()
+        private static Direction InputData()
         {
-            var key = Console.ReadKey().Key;
-            switch(key)
+            switch(Console.ReadKey().Key)
             {
                 case ConsoleKey.A:
                 case ConsoleKey.LeftArrow:
@@ -52,7 +50,7 @@ namespace Module_5
                 case ConsoleKey.DownArrow:
                     return Direction.Down;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(Direction), $"Unknown direction: {key}");
+                    return InputData();                    
             }
         }
     }

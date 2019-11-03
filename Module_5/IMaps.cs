@@ -10,9 +10,6 @@ namespace Module_5
         void UpadateTrapOnMap();
         void AddTrapOnMap(); 
         void RenderMap();
-
-        IPlayer Player { get; }
-        IPlayer Quin { get; }
         
         int Width { get;  }
         int Height { get;  }

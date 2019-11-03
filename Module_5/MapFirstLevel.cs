@@ -19,14 +19,14 @@ namespace Module_5
         private readonly char[,] map = new char[WIDTH + 1, HEIGHT + 1];
         private readonly bool[,] isEmptyCellsOfMap = new bool[WIDTH + 1, HEIGHT + 1];
 
-        public IPlayer Player { get; }
-        public IPlayer Quin { get; }
+        private readonly IPlayer player;
+        private readonly IPlayer quin;
         private Trap trap;
 
         public MapFirstLevel(IPlayer player,IPlayer quin)
         {
-            Player = VerifyPositionGamePerson(player, 1, 1);
-            Quin = VerifyPositionGamePerson(quin, 10, 10);
+            this.player = VerifyPositionGamePerson(player, 1, 1);
+            this.quin = VerifyPositionGamePerson(quin, 10, 10);
         }
 
         private IPlayer VerifyPositionGamePerson(IPlayer person, int positionX, int positionY)
@@ -98,30 +98,30 @@ namespace Module_5
 
         public void CreateMap()
         {
-            for (int index = 0; index <= HEIGHT; index++)
+            for (int positionY = 0; positionY <= HEIGHT; positionY++)
             {
-                for (int index1 = 0; index1 <= WIDTH; index1++)
+                for (int positionX = 0; positionX <= WIDTH; positionX++)
                 {
-                    if ((index == 0) || (index == HEIGHT) ||
-                        (index1 == 0) || (index1 == WIDTH))
+                    if ((positionY == 0) || (positionY == HEIGHT) ||
+                        (positionX == 0) || (positionX == WIDTH))
                     {
-                        isEmptyCellsOfMap[index, index1] = false;
-                        map[index, index1] = '#';
+                        isEmptyCellsOfMap[positionY, positionX] = false;
+                        map[positionY, positionX] = '#';
                     }
-                    else if ((index == Player.PlayerPositionY) && 
-                        (index1 == Player.PlayerPositionX))
+                    else if ((positionY == player.PlayerPositionY) && 
+                        (positionX == player.PlayerPositionX))
                     {
-                        isEmptyCellsOfMap[index, index1] = false;
+                        isEmptyCellsOfMap[positionY, positionX] = false;
                     }
-                    else if ((index == Quin.PlayerPositionY) && 
-                        (index1 == Quin.PlayerPositionX))
+                    else if ((positionY == quin.PlayerPositionY) && 
+                        (positionX == quin.PlayerPositionX))
                     {
-                        isEmptyCellsOfMap[index, index1] = false;
+                        isEmptyCellsOfMap[positionY, positionX] = false;
                     }
                     else
                     {
-                        isEmptyCellsOfMap[index, index1] = true;
-                        map[index, index1] = ' ';
+                        isEmptyCellsOfMap[positionY, positionX] = true;
+                        map[positionY, positionX] = ' ';
                     }
                 }
             }
@@ -129,33 +129,33 @@ namespace Module_5
 
         public void RenderMap()
         {
-            prevPositionX = Player.PlayerPositionX;
-            prevPositionY = Player.PlayerPositionY;
+            prevPositionX = player.PlayerPositionX;
+            prevPositionY = player.PlayerPositionY;
             DrawTrap();
 
-            Console.WriteLine($"\nHit points {Player.PlayerHitPoints}.");
+            Console.WriteLine($"\nHit points {player.PlayerHitPoints}.");
 
-            for (int index = 0; index <= HEIGHT; index++)
+            for (int positionY = 0; positionY <= HEIGHT; positionY++)
             {
-                for (int index1 = 0; index1 <= WIDTH; index1++)
+                for (int positionX = 0; positionX <= WIDTH; positionX++)
                 {
-                    if ((index == Player.PlayerPositionY) && 
-                        (index1 == Player.PlayerPositionX))
+                    if ((positionY == player.PlayerPositionY) && 
+                        (positionX == player.PlayerPositionX))
                     {
-                        map[index, index1] = Player.PlayerView;
+                        map[positionY, positionX] = player.PlayerView;
                     }
-                    else if ((index == Quin.PlayerPositionY) &&
-                        (index1 == Quin.PlayerPositionX))
+                    else if ((positionY == quin.PlayerPositionY) &&
+                        (positionX == quin.PlayerPositionX))
                     {
-                        map[index, index1] = Quin.PlayerView;
+                        map[positionY, positionX] = quin.PlayerView;
                     }
 
-                    if ((index != prevPositionY) &&
-                        (index1 != prevPositionX))
+                    if ((positionY != prevPositionY) &&
+                        (positionX != prevPositionX))
                     {
                         map[prevPositionY, prevPositionX] = ' ';
                     }
-                    Console.Write(map[index, index1]);
+                    Console.Write(map[positionY, positionX]);
                 }
 
                 Console.WriteLine();
