@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Module_5
 {
@@ -6,11 +7,12 @@ namespace Module_5
     {
         static void Main()
         {
-            var player = new Player(10, -11, 1);
-            var quin = new Player(10, 10, 100, '$');
+            var player = new Player(10, 1, 1);
+            var quin = new Player(10, 10, 10, '$');
+            var traps = new List<ITrap>();
             
-            var mapFirstLevel = new MapFirstLevel(player, quin);
-            var logicFirstLevel = new LogicFirstLevel(mapFirstLevel, player, quin);
+            var mapFirstLevel = new MapFirstLevel(player, quin, traps);
+            var logicFirstLevel = new LogicFirstLevel(mapFirstLevel, player, quin, traps);
 
             mapFirstLevel.CreateMap();
             mapFirstLevel.AddTrapOnMap();

@@ -11,11 +11,8 @@
         }
 
         public int PlayerHitPoints { get; set; }
-
         public int PlayerPositionX { get; set; }
-
         public int PlayerPositionY { get; set; }
-
         public char PlayerView { get; set; }
     }
 }

@@ -4,14 +4,12 @@ namespace Module_5
 {
     public interface IMap
     {
-        List<ITrap> Traps { get;  }
+        int Width { get; }
+        int Height { get; }
 
         void CreateMap();
         void UpadateTrapOnMap();
         void AddTrapOnMap(); 
-        void RenderMap();
-        
-        int Width { get;  }
-        int Height { get;  }
+        void RenderMap();        
     }
 }

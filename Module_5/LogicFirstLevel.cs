@@ -8,18 +8,43 @@ namespace Module_5
         private readonly IPlayer player;
         private readonly IPlayer quin;
         private readonly IMap map;
-        private readonly List<ITrap> trap;
+        private readonly List<ITrap> traps;
 
-        public LogicFirstLevel(IMap map, IPlayer player, IPlayer quin)
+        public LogicFirstLevel(IMap map, IPlayer player, IPlayer quin, List<ITrap> traps)
         {
             this.player = player;
             this.quin = quin;
             this.map = map;
-            trap = map.Traps;
+            this.traps = traps;
         }
 
         public bool Status { get; set; } = true;
         public string Message { get; set; }
+
+        public void LogicQuitOrUpdateLevelGame()
+        {
+            if (!Status)
+            {
+                Console.WriteLine($"{Message}\n" +
+                                   "Do you want play again?\n" +
+                                   "If yes, press any key. " +
+                                   "Else press Esc.");
+                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                {
+                    UpdateLevel();
+                }
+            }
+        }
+
+        public void UpdateLevel()
+        {
+            player.PlayerPositionX = 1;
+            player.PlayerPositionY = 1;
+            player.PlayerHitPoints = 10;
+            map.CreateMap();
+            map.UpadateTrapOnMap();
+            Status = true;
+        }
 
         public void LogicGameInteractionWithOjects(Direction direction)
         {
@@ -63,7 +88,7 @@ namespace Module_5
             }
             else if (player.PlayerPositionY >= map.Height)
             {
-                player.PlayerPositionY -=1;
+                player.PlayerPositionY -= 1;
             }
             else if (player.PlayerPositionY <= 0)
             {
@@ -73,13 +98,13 @@ namespace Module_5
 
         private void ContactWithTrap()
         {
-            foreach (var item in trap)
+            foreach (var item in traps)
             {
                 if ((player.PlayerPositionX == item.TrapPositionX) && 
                     (player.PlayerPositionY == item.TrapPositionY) &&
                     (item.TrapIsActive))
                 {
-                    player.PlayerHitPoints -=  item.TrapDamage;
+                    player.PlayerHitPoints -= item.TrapDamage;
                     item.TrapIsActive = false;
                     item.TrapIsVisible = true;
                     break;
@@ -111,31 +136,6 @@ namespace Module_5
             {
                 Message = "Game over. You win.";
             }
-        }
-
-        public void LogicQuitOrUpdateLevelGame()
-        {
-            if (!Status)
-            {
-                Console.WriteLine($"{Message}\n" +
-                                   "Do you want play again?\n" +
-                                   "If yes, press any key. " +
-                                   "Else press Esc.");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                    UpdateLevel();
-                }
-            }
-        }
-
-        public void UpdateLevel()
-        {
-            player.PlayerPositionX = 1;
-            player.PlayerPositionY = 1;
-            player.PlayerHitPoints = 10;
-            map.CreateMap();
-            map.UpadateTrapOnMap();
-            Status = true;
         }
     }
 }

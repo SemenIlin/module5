@@ -5,55 +5,34 @@ namespace Module_5
 {
     public class MapFirstLevel : IMap
     {
-        readonly Random random = new Random();
-
         private const int WIDTH = 11;
         private const int HEIGHT = 11;
         private const int COUNT_TRAP_ON_MAP = 10;
+
+        private readonly Random random = new Random();
+
+        private readonly char[,] map = new char[HEIGHT + 1, WIDTH + 1];
+        private readonly bool[,] isEmptyCellsOfMap = new bool[HEIGHT + 1, WIDTH + 1];
+        private readonly List<ITrap> traps;
+        private readonly IPlayer player;
+        private readonly IPlayer quin;
+
+        private Trap trap;
         private int prevPositionX;
         private int prevPositionY;
         private int trapPositionX;
         private int trapPositionY;
         private int damage;
 
-        private readonly char[,] map = new char[WIDTH + 1, HEIGHT + 1];
-        private readonly bool[,] isEmptyCellsOfMap = new bool[WIDTH + 1, HEIGHT + 1];
-
-        private readonly IPlayer player;
-        private readonly IPlayer quin;
-        private Trap trap;
-
-        public MapFirstLevel(IPlayer player,IPlayer quin)
+        public MapFirstLevel(IPlayer player, IPlayer quin, List<ITrap> traps)
         {
-            this.player = VerifyPositionGamePerson(player, 1, 1);
-            this.quin = VerifyPositionGamePerson(quin, 10, 10);
+            this.player = player;
+            this.quin = quin;
+            this.traps = traps;
         }
 
-        private IPlayer VerifyPositionGamePerson(IPlayer person, int positionX, int positionY)
-        {
-            if (!IsValidRangeOfObjectLocation(person))
-            {
-                person.PlayerPositionX = positionX;
-                person.PlayerPositionY = positionY;
-            }
-
-            return person;
-        }
-
-        private bool IsValidRangeOfObjectLocation(IPlayer person)
-        {
-            if ((person.PlayerPositionX >= WIDTH) || (person.PlayerPositionX <= 0) ||
-                (person.PlayerPositionY >= HEIGHT) || (person.PlayerPositionY <= 0))
-            {
-                return false;
-            }
-            else 
-            {
-                return true;            
-            }
-        }
-
-        public List<ITrap> Traps { get;  } = new List<ITrap>();
+        public int Width { get; } = WIDTH;
+        public int Height { get; } = HEIGHT;
 
         public void AddTrapOnMap()
         {
@@ -63,7 +42,7 @@ namespace Module_5
                 if (isEmptyCellsOfMap[trapPositionX, trapPositionY])
                 {
                     trap = new Trap(damage, trapPositionX, trapPositionY, true);
-                    Traps.Add(trap);
+                    traps.Add(trap);
                     isEmptyCellsOfMap[trapPositionX, trapPositionY] = false;
                     index++;
                 }
@@ -72,28 +51,21 @@ namespace Module_5
 
         public void UpadateTrapOnMap()
         {
-            for (int index = 0; index < Traps.Count;)
+            for (int index = 0; index < traps.Count;)
             {
                 GenerateParametersOfTrap();
                 if (isEmptyCellsOfMap[trapPositionX, trapPositionY])
                 {
-                    Traps[index].TrapDamage = damage;
-                    Traps[index].TrapPositionX = trapPositionX;
-                    Traps[index].TrapPositionY = trapPositionY;
-                    Traps[index].TrapIsActive = true;
-                    Traps[index].TrapIsVisible = false;
+                    traps[index].TrapDamage = damage;
+                    traps[index].TrapPositionX = trapPositionX;
+                    traps[index].TrapPositionY = trapPositionY;
+                    traps[index].TrapIsActive = true;
+                    traps[index].TrapIsVisible = false;
 
                     isEmptyCellsOfMap[trapPositionX, trapPositionY] = false;
                     index++;
                 }
             }
-        }
-
-        private void GenerateParametersOfTrap()
-        {
-            trapPositionX = random.Next(1, 11);
-            trapPositionY = random.Next(1, 11);
-            damage = random.Next(1, 11);
         }
 
         public void CreateMap()
@@ -162,9 +134,16 @@ namespace Module_5
             }
         }
 
+        private void GenerateParametersOfTrap()
+        {
+            trapPositionX = random.Next(1, 11);
+            trapPositionY = random.Next(1, 11);
+            damage = random.Next(1, 11);
+        }
+
         private void DrawTrap()
         {
-            foreach (var item in Traps)
+            foreach (var item in traps)
             {
                 if (item.TrapIsVisible)
                 {
@@ -173,10 +152,5 @@ namespace Module_5
                 }
             }
         }
-
-        public int Width { get; } = WIDTH;
-
-        public int Height { get; } = HEIGHT;       
     }
 }
-
