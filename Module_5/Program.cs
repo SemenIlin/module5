@@ -24,6 +24,10 @@ namespace Module_5
                 {
                     logicFirstLevel.LogicGameInteractionWithOjects(InputData());
                 }
+                catch (ArgumentOutOfRangeException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
